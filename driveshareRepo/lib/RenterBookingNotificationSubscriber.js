@@ -8,7 +8,7 @@ class RenterBookingNotificationSubscriber {
   async update({ event, booking }) {
     console.log(`Renter ${this.renterId} notified of event "${event}" on booking ${booking.id}`);
 
-    //Create the notification for the renter.
+    // Persist the notification for the renter.
     try {
       await prisma.notification.create({
         data: {

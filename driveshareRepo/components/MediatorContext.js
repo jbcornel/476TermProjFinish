@@ -1,19 +1,21 @@
-
-"use client";
+// components/MediatorContext.js
+"use client"; // or for pages router, ignore this line
 
 import React, { createContext, useContext, useRef } from 'react';
 
-
- //the Mediator class orchestrates cross-component communication.
- //when an update is made, it notifies the subscribers
-
+/**
+ * The Mediator class orchestrates cross-component communication.
+ * For example, when a booking is created, it can notify other parts of the UI,
+ * or when a user logs in, it can share that info with multiple components.
+ */
 class AppMediator {
   constructor() {
-    //shared state
+    // Store some shared state or references if needed
     this.user = null;
     this.subscribers = {};
   }
 
+  // Example: a pub/sub method inside the Mediator
   subscribe(eventType, callback) {
     if (!this.subscribers[eventType]) {
       this.subscribers[eventType] = [];
@@ -32,7 +34,7 @@ class AppMediator {
     }
   }
 
-
+  // Example: set current user
   setUser(user) {
     this.user = user;
     this.publish('userChanged', user);
@@ -42,12 +44,15 @@ class AppMediator {
     return this.user;
   }
 
+  // Additional mediator logic:
+  // e.g. "bookingCreated(booking)" => this.publish('bookingCreated', booking);
+  // e.g. "messageSent(msg)" => this.publish('messageSent', msg);
 }
 
 const MediatorContext = createContext(null);
 
 export function MediatorProvider({ children }) {
-  //one instance of the mediator for the entire app
+  // We keep one instance of the mediator for the entire app
   const mediatorRef = useRef(new AppMediator());
 
   return (
@@ -57,7 +62,7 @@ export function MediatorProvider({ children }) {
   );
 }
 
-//Custom hook for easy usage in components
+// Custom hook for easy usage in components
 export function useMediator() {
   return useContext(MediatorContext);
 }

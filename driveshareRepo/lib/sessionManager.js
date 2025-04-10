@@ -1,5 +1,4 @@
-
-
+// lib/sessionManager.js
 
 class SessionManager {
   constructor() {
@@ -8,7 +7,7 @@ class SessionManager {
   }
 
   createSession(userId, data) {
-    console.log('[SessionManager] Creating session:', userId, data);
+    console.log('🧠 [SessionManager] Creating session:', userId, data);
     this.sessions.set(Number(userId), data);
     this.setSessionTimeout(userId);
   }
@@ -43,7 +42,7 @@ class SessionManager {
   }
 }
 
-//Global session manager singleton
+// 👇 THIS is the real fix — use global to persist across requests
 const globalForSession = globalThis;
 
 if (!globalForSession.sessionManager) {

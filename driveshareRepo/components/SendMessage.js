@@ -27,7 +27,7 @@ export default function SendMessage({ receiverId }) {
         throw new Error("Failed to send message");
       }
       const newMessage = await res.json();
-      //Publish an event for immediate UI update
+      // Publish an event for immediate UI update
       mediator.publish("newMessage", newMessage);
       setContent("");
     } catch (err) {

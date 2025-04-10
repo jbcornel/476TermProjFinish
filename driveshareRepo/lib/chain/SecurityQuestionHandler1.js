@@ -1,3 +1,4 @@
+// lib/chain/SecurityQuestionHandler1.js
 import Handler from './Handler.js';
 import prisma from '@/lib/prisma';
 
@@ -7,12 +8,12 @@ export default class SecurityQuestionHandler1 extends Handler {
     if (!user) {
       return { success: false, error: 'No user found in request data.' };
     }
-    //check if answers array has at least an index 0
+    // Check if answers array has at least an index 0
     if (!answers || !answers[0]) {
       return { success: false, error: 'Missing answer for question #1.' };
     }
 
-    //find the 1st question for this user
+    // Example: find the 1st question for this user
     const question = await prisma.securityQuestion.findFirst({
       where: { userId: user.id },
       skip: 0,
@@ -26,7 +27,7 @@ export default class SecurityQuestionHandler1 extends Handler {
       return { success: false, error: 'Incorrect answer for question #1' };
     }
 
-    //if pass, go to next handler
+    // If pass, go to next handler
     return super.handle(requestData);
   }
 }

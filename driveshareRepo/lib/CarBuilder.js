@@ -1,4 +1,5 @@
-//Builder class with separate functions to build each attribute
+// lib/CarBuilder.js
+
 class CarBuilder {
     constructor() {
       this.car = {}

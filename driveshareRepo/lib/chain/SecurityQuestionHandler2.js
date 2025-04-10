@@ -1,3 +1,4 @@
+// lib/chain/SecurityQuestionHandler2.js
 import Handler from './Handler.js';
 import prisma from '@/lib/prisma';
 
@@ -11,7 +12,7 @@ export default class SecurityQuestionHandler2 extends Handler {
       return { success: false, error: 'Missing answer for question #2.' };
     }
 
-    //find the 2nd question for this user
+    // Example: find the 2nd question for this user
     const question = await prisma.securityQuestion.findFirst({
       where: { userId: user.id },
       skip: 1,

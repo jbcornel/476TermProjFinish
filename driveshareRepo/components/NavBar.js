@@ -1,4 +1,4 @@
-"use client"; 
+"use client"; // Not strictly necessary in the pages router, but safe
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -15,7 +15,9 @@ export default function Navbar() {
     }
   }, []);
 
-//simple navbar to allow navigation to any link in app
+  // If you want to navigate programmatically, you can do so with next/router
+  // or just use <Link> for normal navigation.
+
   return (
     <header style={{ background: "#333", padding: "1rem" }}>
       <nav style={{ display: "flex", justifyContent: "space-between" }}>

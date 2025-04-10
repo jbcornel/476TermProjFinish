@@ -1,4 +1,4 @@
-
+// lib/chain/Handler.js
 
 export default class Handler {
     setNext(handler) {
@@ -7,11 +7,11 @@ export default class Handler {
     }
   
     async handle(requestData) {
-      //If there's a next handler in the chain, pass it along
+      // If there's a next handler in the chain, pass it along
       if (this.nextHandler) {
         return this.nextHandler.handle(requestData);
       }
-      //If we reach here, all steps have succeeded
+      // If we reach here, all steps have succeeded
       return { success: true };
     }
   }

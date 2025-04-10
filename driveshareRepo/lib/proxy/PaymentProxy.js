@@ -1,14 +1,13 @@
-
+// lib/proxy/PaymentProxy.js
 import fetch from 'node-fetch';
 
 class PaymentProxy {
   constructor(paymentServerUrl) {
-    this.paymentServerUrl = paymentServerUrl; // in our case
-    //  'http://localhost:4000'
+    this.paymentServerUrl = paymentServerUrl; // e.g. 'http://localhost:4000'
   }
 
   async charge(amount, bookingId) {
-    //This method acts as a proxy to the real payment server
+    // This method acts as a proxy to the real payment server
     try {
       const res = await fetch(`${this.paymentServerUrl}/charge`, {
         method: 'POST',

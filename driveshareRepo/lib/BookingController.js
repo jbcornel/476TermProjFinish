@@ -1,10 +1,8 @@
-
+// lib/BookingController.js
 import prisma from './prisma';
 import OwnerBookingNotificationSubscriber from './OwnerBookingNotificationSubscriber';
 import RenterBookingNotificationSubscriber from './RenterBookingNotificationSubscriber';
 
-//Controller class to fulfill observer logic with data storage within
-//sqlite3 database
 class BookingController {
   // Add one subscriber
   async subscribe(bookingId, userId, role) {
@@ -14,14 +12,14 @@ class BookingController {
     });
   }
 
-  //Remove one subscriber
+  // Remove one subscriber
   async unsubscribe(bookingId, userId) {
     await prisma.bookingObserver.deleteMany({
       where: { bookingId, userId }
     });
   }
 
-  //Notify all current subscribers for this booking
+  // Notify all current subscribers for this booking
   async notifyEvent(eventType, booking) {
     const observers = await prisma.bookingObserver.findMany({
       where: { bookingId: booking.id }
