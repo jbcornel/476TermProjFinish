@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int                @id @default(autoincrement())
+  email              String             @unique
+  password           String
+  username           String             @unique
+
+  cars               Car[]
+  bookings           Booking[]
+  questions          SecurityQuestion[]
+  sentMessages       Message[]          @relation("SentMessages")
+  receivedMessages   Message[]          @relation("ReceivedMessages")
+  notifications      Notification[]
+
+  // 👇 Add this line
+  bookingObservers   BookingObserver[]
+}
+
+model SecurityQuestion {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  prompt String
+  answer String
+
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Car {
+  id             Int       @id @default(autoincrement())
+  model          String
+  year           Int
+  mileage        Int
+  location       String
+  available      Boolean   @default(true)
+  ownerId        Int
+  pricePerHour   Float
+  availableFrom  DateTime
+  availableTo    DateTime
+
+  // Relations
+  owner          User      @relation(fields: [ownerId], references: [id])
+  bookings       Booking[] // One-to-many: A car can have multiple bookings
+}
+
+model Booking {
+  id             Int                 @id @default(autoincrement())
+  carId          Int
+  renterId       Int
+  startDate      DateTime
+  endDate        DateTime
+  status         String              @default("pending")
+  cost           Float?
+  paymentStatus  String?
+
+  car            Car                @relation(fields: [carId], references: [id])
+  renter         User               @relation(fields: [renterId], references: [id])
+
+  // 👇 Add this line to fix relation error
+  observers      BookingObserver[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  content    String
+  timestamp  DateTime @default(now())
+
+  // Relations
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model Notification {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  content    String
+  createdAt  DateTime @default(now())
+
+  // Relation
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model BookingObserver {
+  id         Int      @id @default(autoincrement())
+  bookingId  Int
+  userId     Int
+  role       String   // "owner", "renter", or other observer types
+  createdAt  DateTime @default(now())
+
+  // Relations
+  booking    Booking  @relation(fields: [bookingId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
